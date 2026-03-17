@@ -397,63 +397,30 @@
         <p class="section-intro">Every photo a moment frozen in time. Every moment, a reminder of how lucky I am.</p>
       </div>
 
-      <!--
-      ╔══════════════════════════════════════════════════════╗
-      ║  📸  HOW TO ADD YOUR PHOTOS  (delete before sharing) ║
-      ╠══════════════════════════════════════════════════════╣
-      ║  1. Create a folder called  photos/  next to this    ║
-      ║     index.html file in your GitHub repo.             ║
-      ║                                                      ║
-      ║  2. Upload your photos named:                        ║
-      ║     photo1.jpg, photo2.jpg ... photo6.jpg            ║
-      ║                                                      ║
-      ║  3. For each card below, replace the entire          ║
-      ║     <div class="photo-placeholder">...</div>         ║
-      ║     block with:                                      ║
-      ║     <img src="photos/photo1.jpg" alt="caption">      ║
-      ║                                                      ║
-      ║  4. Update each .photo-caption span text             ║
-      ║     to your actual caption for that photo.           ║
-      ║                                                      ║
-      ║  5. Delete this comment block before sharing! 🌸     ║
-      ╚══════════════════════════════════════════════════════╝
-      -->
-
-      <div class="photo-instructions">
-        <h4>📸 How to add your photos</h4>
-        <ol>
-          <li>Create a folder called <code>photos</code> next to <code>index.html</code> in your GitHub repo</li>
-          <li>Upload your images named <code>photo1.jpg</code> through <code>photo6.jpg</code></li>
-          <li>For each card, replace <code>&lt;div class="photo-placeholder"&gt;…&lt;/div&gt;</code> with <code>&lt;img src="photos/photo1.jpg"&gt;</code></li>
-          <li>Update the caption text in each <code>.photo-caption</code> span</li>
-          <li><strong>Delete this box before sharing with Deepti 🌸</strong></li>
-        </ol>
-      </div>
-
       <div class="photo-grid">
         <div class="photo-card">
           <img src="photos/photo1.jpeg" alt="caption"> 
-          <div class="photo-overlay"><span class="photo-caption">Your caption here</span></div>
+          <div class="photo-overlay"><span class="photo-caption">My Favorite photo of youuu</span></div>
         </div>
         <div class="photo-card">
-          <img src="photos/photo2.jpeg alt="caption"> 
-          <div class="photo-overlay"><span class="photo-caption">Your caption here</span></div>
+          <img src="photos/photo2.jpeg" alt="caption"> 
+          <div class="photo-overlay"><span class="photo-caption">Another great moment with you</span></div>
         </div>
         <div class="photo-card">
           <img src="photos/photo3.jpeg" alt="caption"> 
-          <div class="photo-overlay"><span class="photo-caption">Your caption here</span></div>
+          <div class="photo-overlay"><span class="photo-caption">Yet another beautiful moment</span></div>
         </div>
         <div class="photo-card">
-          <img src="photos/photo4.jpeg alt="caption"> 
-          <div class="photo-overlay"><span class="photo-caption">Your caption here</span></div>
+          <img src="photos/photo4.jpeg" alt="caption"> 
+          <div class="photo-overlay"><span class="photo-caption">Yet another beautiful moment</span></div>
         </div>
         <div class="photo-card">
           <img src="photos/photo5.jpeg" alt="caption">
-          <div class="photo-overlay"><span class="photo-caption">Your caption here</span></div>
+          <div class="photo-overlay"><span class="photo-caption">Yet another beautiful moment</span></div>
         </div>
         <div class="photo-card">
           <img src="photos/photo6.jpeg" alt="caption">
-          <div class="photo-overlay"><span class="photo-caption">Your caption here</span></div>
+          <div class="photo-overlay"><span class="photo-caption">Yet another beautiful moment</span></div>
         </div>
       </div>
     </div>
@@ -565,7 +532,7 @@ function initSite() {
     .forEach(el => io.observe(el));
 
   // Countdown — 👉 CHANGE THIS to your wedding date (year, month 0-indexed, day)
-  const WEDDING = new Date(2026, 04, 08, 10, 0, 0);
+  const WEDDING = new Date(2026, 4, 8, 10, 0, 0);
   const MONTHS  = ['January','February','March','April','May','June',
                    'July','August','September','October','November','December'];
   document.getElementById('wedding-date-badge').textContent =
