@@ -239,6 +239,73 @@
 
   @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
 
+  /* ── HIDDEN LETTER ── */
+  #letter { background: var(--deep); padding: 5rem 1.5rem; text-align: center; }
+  .letter-inner { max-width: 620px; margin: 0 auto; }
+
+  .rose-trigger {
+    display: inline-flex; flex-direction: column; align-items: center; gap: .6rem;
+    cursor: pointer; background: none; border: none;
+    -webkit-tap-highlight-color: transparent;
+    margin-bottom: 1rem;
+  }
+  .rose-emoji {
+    font-size: 3.5rem;
+    display: block;
+    transition: transform .4s ease;
+    filter: drop-shadow(0 0 0px #c9787e00);
+    animation: rosePulse 3s ease-in-out infinite;
+  }
+  @keyframes rosePulse {
+    0%,100% { transform: scale(1);   filter: drop-shadow(0 0 6px #b0585888); }
+    50%      { transform: scale(1.1); filter: drop-shadow(0 0 18px #b05860cc); }
+  }
+  .rose-hint {
+    font-size: .65rem; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--rose); opacity: .6; font-family: 'Jost', sans-serif; font-weight: 200;
+  }
+
+  .letter-envelope {
+    max-height: 0; overflow: hidden;
+    transition: max-height 1.2s cubic-bezier(.4,0,.2,1), opacity .8s ease;
+    opacity: 0;
+  }
+  .letter-envelope.open { max-height: 2000px; opacity: 1; }
+
+  .letter-paper {
+    background: #f5ebe4;
+    border-radius: 4px;
+    padding: 2.5rem 2rem;
+    margin-top: 1.5rem;
+    text-align: left;
+    position: relative;
+  }
+  .letter-paper::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--rose), var(--gold), var(--rose));
+    border-radius: 4px 4px 0 0;
+  }
+
+  .letter-salutation {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.3rem;
+    color: var(--deep); margin-bottom: 1.25rem;
+  }
+  .letter-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; font-weight: 400;
+    line-height: 1.9; color: #3a1e22;
+  }
+  .letter-body p { margin-bottom: 1.1rem; }
+  .letter-body p:last-child { margin-bottom: 0; }
+  .letter-sign {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.1rem;
+    color: var(--mauve); margin-top: 1.75rem;
+    text-align: right;
+  }
+
   /* ── DESKTOP OVERRIDES ── */
   @media(min-width:641px){
     nav { padding: 1.2rem 3rem; }
@@ -409,6 +476,30 @@
     </div>
   </section>
 
+  <section id="letter">
+    <div class="letter-inner">
+      <p class="section-label" style="color:var(--rose);margin-bottom:1.5rem;">Something just for you</p>
+      <button class="rose-trigger" id="rose-btn" aria-label="Open letter">
+        <span class="rose-emoji">🌹</span>
+        <span class="rose-hint">Tap the rose</span>
+      </button>
+      <div class="letter-envelope" id="letter-envelope">
+        <div class="letter-paper">
+          <p class="letter-salutation">Hey Deepu,</p>
+          <div class="letter-body">
+            <p>We are going to get married in a few weeks, and I want to take this moment to tell you how much I love you — and how much I want to keep loving you, every single day, for the rest of my life.</p>
+            <p>You have no idea the impact you have had on me. I have changed a lot as a person since you came into my life. I am calmer, kinder, and more sure of myself — because of you. You made me want to be better, not by asking me to, but just by being who you are.</p>
+            <p>The way you laugh, the way you care about the people around you, the way you make even the simplest moments feel warm and full — I notice all of it. I always have.</p>
+            <p>I don't have grand words or poetry. I just know that when I think about my life, I can't imagine it without you in it. You are my home. You are the person I want to call first when something happens, the person I want beside me when things are hard, and the person I want to celebrate every good thing with.</p>
+            <p>In a few weeks, I get to marry you. I still can't quite believe it.</p>
+            <p>I love you, Deepu. More than I'll ever be able to properly say.</p>
+          </div>
+          <p class="letter-sign">— Yours, always 🌸</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>
 
 <script>
@@ -504,6 +595,31 @@ function initSite() {
     document.getElementById('cd-secs').textContent  = pad(Math.floor((diff % 60000)    / 1000));
   }
   tick(); setInterval(tick, 1000);
+
+  // Rose letter unlock
+  const roseBtn      = document.getElementById('rose-btn');
+  const roseEmoji    = roseBtn.querySelector('.rose-emoji');
+  const roseHint     = roseBtn.querySelector('.rose-hint');
+  const envelope     = document.getElementById('letter-envelope');
+  let   letterOpen   = false;
+
+  roseBtn.addEventListener('click', () => {
+    letterOpen = !letterOpen;
+    if (letterOpen) {
+      envelope.classList.add('open');
+      roseEmoji.style.animation = 'none';
+      roseEmoji.style.transform = 'scale(1.2) rotate(-10deg)';
+      roseEmoji.style.filter    = 'drop-shadow(0 0 24px #b05860cc)';
+      roseHint.textContent      = '💌';
+      setTimeout(() => envelope.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+    } else {
+      envelope.classList.remove('open');
+      roseEmoji.style.animation = '';
+      roseEmoji.style.transform = '';
+      roseEmoji.style.filter    = '';
+      roseHint.textContent      = 'Tap the rose';
+    }
+  });
 
   // YouTube
   const VIDEO_ID = 'y_GVDbfaiwQ';
