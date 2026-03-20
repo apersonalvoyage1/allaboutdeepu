@@ -362,7 +362,6 @@
   <!-- Hidden YouTube players -->
   <div style="position:fixed;bottom:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;">
     <div id="yt-player"></div>
-    <div id="photo-yt-player"></div>
   </div>
 
   <nav id="nav">
@@ -422,42 +421,42 @@
       </div>
       <!-- Each photo has a song. Tap a photo to play its song. Tap again to stop. -->
       <div class="photo-grid">
-        <div class="photo-card" data-song="7c3-Gei5j4w" data-caption="My absolute favourite. Obviously ❤️">
+        <div class="photo-card" data-song="audio/Chaand Baaliyan - Aditya A [320] Kbps-(SongsPk.com.se).mp3" data-caption="My absolute favourite. Obviously ❤️">
           <img src="photos/photo1.jpeg" alt="My favourite">
           <div class="photo-overlay">
             <span class="photo-caption">My absolute favourite. Obviously ❤️</span>
             <span class="photo-note-icon">♪</span>
           </div>
         </div>
-        <div class="photo-card" data-song="LXwU6eljR_k" data-caption="White dress, beach, you. I didn't stand a chance.">
+        <div class="photo-card" data-song="audio/Aahatein - Samyak Prasana [320] Kbps-(SongsPk.com.se).mp3" data-caption="White dress, beach, you. I didn't stand a chance.">
           <img src="photos/photo2.jpeg" alt="Beach">
           <div class="photo-overlay">
             <span class="photo-caption">White dress, beach, you. I didn't stand a chance.</span>
             <span class="photo-note-icon">♪</span>
           </div>
         </div>
-        <div class="photo-card" data-song="kQkH6Ch8Kbg" data-caption="You in a saree. Say no more.">
+        <div class="photo-card" data-song="audio/Saibo (Shreya Ghoshal)(KoshalWorld.Com).mp3" data-caption="You in a saree. Say no more.">
           <img src="photos/photo3.jpeg" alt="Saree">
           <div class="photo-overlay">
             <span class="photo-caption">You in a saree. Say no more.</span>
             <span class="photo-note-icon">♪</span>
           </div>
         </div>
-        <div class="photo-card" data-song="AKmql48K29w" data-caption="Same beach. This time I made the view better 😄">
+        <div class="photo-card" data-song="audio/Darasal [128 Kbps]-(SongsPk.com.se).mp3" data-caption="Same beach. This time I made the view better 😄">
           <img src="photos/photo4.jpeg" alt="Beach together">
           <div class="photo-overlay">
             <span class="photo-caption">Same beach. This time I made the view better 😄</span>
             <span class="photo-note-icon">♪</span>
           </div>
         </div>
-        <div class="photo-card" data-song="m4TQ-pIg5g4" data-caption="Bangalore smiles. My favourite kind.">
+        <div class="photo-card" data-song="audio/Tu Hain Toh (Mr. And Mrs. Mahi) [128 Kbps]-(SongsPk.com.se).mp3" data-caption="Bangalore smiles. My favourite kind.">
           <img src="photos/photo5.jpeg" alt="Bangalore">
           <div class="photo-overlay">
             <span class="photo-caption">Bangalore smiles. My favourite kind.</span>
             <span class="photo-note-icon">♪</span>
           </div>
         </div>
-        <div class="photo-card" data-song="4R2WjSSPkBU" data-caption="Kochi and full hearts. Best day.">
+        <div class="photo-card" data-song="audio/Agar Ho Tum (Mr and Mrs Mahi) [320] Kbps-(SongsPk.com.se).mp3" data-caption="Kochi and full hearts. Best day.">
           <img src="photos/photo6.jpeg" alt="Kochi">
           <div class="photo-overlay">
             <span class="photo-caption">Kochi and full hearts. Best day.</span>
@@ -646,20 +645,17 @@ function initSite() {
   });
 
   // ════════════════════════════
-  //  YOUTUBE — bg + photo songs
+  //  YOUTUBE — background only
   // ════════════════════════════
   const BG_VIDEO_ID = 'y_GVDbfaiwQ';
-  let bgPlayer    = null;
-  let photoPlayer = null;
-  let bgPlaying   = false;
-  let activeCard  = null;
+  let bgPlayer  = null;
+  let bgPlaying = false;
 
   const ytScript = document.createElement('script');
   ytScript.src = 'https://www.youtube.com/iframe_api';
   document.head.appendChild(ytScript);
 
   window.onYouTubeIframeAPIReady = function() {
-    // Background player
     bgPlayer = new YT.Player('yt-player', {
       height: '1', width: '1', videoId: BG_VIDEO_ID,
       playerVars: { autoplay:0, loop:1, playlist:BG_VIDEO_ID, controls:0, disablekb:1, fs:0 },
@@ -672,57 +668,8 @@ function initSite() {
         }
       }
     });
-
-    // Photo song player
-    photoPlayer = new YT.Player('photo-yt-player', {
-      height: '1', width: '1', videoId: '',
-      playerVars: { autoplay:0, controls:0, disablekb:1, fs:0 },
-      events: {
-        onReady: e => e.target.setVolume(85),
-        onStateChange: e => {
-          if (e.data === YT.PlayerState.ENDED) stopPhotoSong();
-        }
-      }
-    });
   };
 
-  function stopPhotoSong() {
-    if (photoPlayer && photoPlayer.stopVideo) photoPlayer.stopVideo();
-    if (activeCard) { activeCard.classList.remove('song-playing'); activeCard = null; }
-    document.getElementById('now-playing').classList.remove('show');
-    if (bgPlaying && bgPlayer) bgPlayer.playVideo();
-  }
-
-  // Photo tap handler
-  document.querySelectorAll('.photo-card[data-song]').forEach(card => {
-    card.addEventListener('click', () => {
-      const songId  = card.dataset.song;
-      const caption = card.dataset.caption;
-
-      // Tap same card = stop
-      if (activeCard === card) { stopPhotoSong(); return; }
-
-      // Clear previous
-      if (activeCard) activeCard.classList.remove('song-playing');
-
-      // Pause background music
-      if (bgPlayer && bgPlaying) bgPlayer.pauseVideo();
-
-      // Load & play photo song
-      if (photoPlayer && photoPlayer.loadVideoById) photoPlayer.loadVideoById(songId);
-
-      activeCard = card;
-      card.classList.add('song-playing');
-
-      // Show now-playing bar
-      document.getElementById('np-text').textContent = caption;
-      document.getElementById('now-playing').classList.add('show');
-    });
-  });
-
-  document.getElementById('np-stop').addEventListener('click', stopPhotoSong);
-
-  // Background music controls
   document.getElementById('gate-play-btn').addEventListener('click', () => {
     document.getElementById('music-gate').classList.add('hidden');
     if (bgPlayer && bgPlayer.playVideo) bgPlayer.playVideo();
@@ -734,6 +681,51 @@ function initSite() {
     if (!bgPlayer) return;
     bgPlaying ? bgPlayer.pauseVideo() : bgPlayer.playVideo();
   });
+
+  // ════════════════════════════
+  //  HTML5 AUDIO — photo songs
+  // ════════════════════════════
+  let photoAudio = new Audio();
+  photoAudio.volume = 0.9;
+  let activeCard = null;
+
+  function stopPhotoSong() {
+    photoAudio.pause();
+    photoAudio.currentTime = 0;
+    if (activeCard) { activeCard.classList.remove('song-playing'); activeCard = null; }
+    document.getElementById('now-playing').classList.remove('show');
+    if (bgPlaying && bgPlayer) bgPlayer.playVideo();
+  }
+
+  photoAudio.addEventListener('ended', stopPhotoSong);
+
+  document.querySelectorAll('.photo-card[data-song]').forEach(card => {
+    card.addEventListener('click', () => {
+      const songSrc = card.dataset.song;
+      const caption = card.dataset.caption;
+
+      // Tap same card = stop
+      if (activeCard === card) { stopPhotoSong(); return; }
+
+      // Clear previous
+      if (activeCard) activeCard.classList.remove('song-playing');
+
+      // Pause background music
+      if (bgPlayer && bgPlaying) bgPlayer.pauseVideo();
+
+      // Play photo song
+      photoAudio.src = songSrc;
+      photoAudio.play().catch(() => {});
+
+      activeCard = card;
+      card.classList.add('song-playing');
+
+      document.getElementById('np-text').textContent = caption;
+      document.getElementById('now-playing').classList.add('show');
+    });
+  });
+
+  document.getElementById('np-stop').addEventListener('click', stopPhotoSong);
 }
 </script>
 </body>
